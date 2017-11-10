@@ -284,6 +284,8 @@ extension MaterialShowcase {
         let button = targetView as! UIButton
         let buttonCopy = targetCopyView as! UIButton
         buttonCopy.setImage(button.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
+        buttonCopy.setTitleColor(targetTintColor, for: .normal)
+        buttonCopy.isEnabled = true
       } else if targetCopyView is UIImageView {
         let imageView = targetView as! UIImageView
         let imageViewCopy = targetCopyView as! UIImageView
@@ -293,6 +295,8 @@ extension MaterialShowcase {
         let imageView = targetView.subviews.first as! UIImageView
         imageViewCopy.image = imageView.image?.withRenderingMode(.alwaysTemplate)
         labelCopy.textColor = targetTintColor
+      } else if let label = targetCopyView as? UILabel {
+        label.textColor = targetTintColor
       }
     }
     
@@ -394,13 +398,13 @@ extension MaterialShowcase {
         withDuration: aniGoOutDuration, delay: 0, options: [.curveEaseOut],
         animations: {
           self.alpha = 0
-        },
+      },
         completion: { _ in
           // Recycle subviews
           self.recycleSubviews()
           // Remove it from current screen
           self.removeFromSuperview()
-        }
+      }
       )
     } else {
       // Recycle subviews
