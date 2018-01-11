@@ -105,6 +105,7 @@ open class MaterialShowcaseController {
           forIndex: self.currentIndex,
           forError: error
         )
+        self.currentShowcase = nil
         self.nextShowcase()
       }
     }
