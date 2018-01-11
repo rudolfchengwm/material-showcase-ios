@@ -126,3 +126,16 @@ public enum MaterialShowcaseError: Error {
   case missingContainer
   case dataSourceShowcaseIsNil
 }
+
+extension MaterialShowcaseError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .missingTarget:
+            return "Missing target view."
+        case .missingContainer:
+            return "Missing container view."
+        case .dataSourceShowcaseIsNil:
+            return "Data Source was given a nil showcase."
+        }
+    }
+}
