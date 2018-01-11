@@ -34,6 +34,14 @@ public extension MaterialShowcaseControllerDelegate {
                                   forIndex index: Int) {
     // do nothing
   }
+  
+  func materialShowcaseController(_ materialShowcaseController: MaterialShowcaseController,
+                                  materialShowcaseDidSkip materialShowcase: MaterialShowcase?,
+                                  forIndex index: Int,
+                                  forError error: Error?) {
+    // do nothing
+  }
+  
 }
 
 public protocol MaterialShowcaseControllerDataSource: class {
