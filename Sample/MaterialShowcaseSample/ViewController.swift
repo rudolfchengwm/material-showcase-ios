@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     showcase.secondaryText = "Click here to go into details"
     showcase.shouldSetTintColor = false // It should be set to false when button uses image.
     showcase.backgroundPromptColor = UIColor.blue
-    showcase.show(completion: {
+    showcase.show(completion: { error in
       // You can save showcase state here
     })
   }
@@ -40,7 +40,7 @@ class ViewController: UIViewController {
     showcase.setTargetView(view: sender)
     showcase.primaryText = "Action 1"
     showcase.secondaryText = "Click here to go into details"
-    showcase.show(completion: {
+    showcase.show(completion: { error in
       // You can save showcase state here
     })
   }
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
     showcase.secondaryTextSize = 14
     // Delegate to handle other action after showcase is dismissed.
     showcase.delegate = self
-    showcase.show(completion: {
+    showcase.show(completion: { error in
       // You can save showcase state here
     })
   }
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
     showcase.setTargetView(tabBar: tabBar, itemIndex: 0)
     showcase.primaryText = "Action 3"
     showcase.secondaryText = "Click here to go into details"
-    showcase.show(completion: nil)
+    showcase.show()
   }
   
   @IBAction func showTableView(_ sender: Any) {
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
     showcase.setTargetView(tableView: tableView, section: 0, row: 2)
     showcase.primaryText = "Action 3"
     showcase.secondaryText = "Click here to go into details"
-    showcase.show(completion: nil)
+    showcase.show()
   }
 }
 

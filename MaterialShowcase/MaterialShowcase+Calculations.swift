@@ -10,19 +10,19 @@ import Foundation
 
 extension MaterialShowcase {
 
-  func isInGutter(center: CGPoint) -> Bool {
+  func isInGutter(center: CGPoint, container containerView: UIView) -> Bool {
     return center.y < offsetThreshold || containerView.frame.height - center.y < offsetThreshold
   }
   
-  func getOuterCircleCenterPoint(for target: UIView) -> CGPoint {
-    if isInGutter(center: target.center) {
+  func getOuterCircleCenterPoint(for target: UIView, inContainer containerView: UIView) -> CGPoint {
+    if isInGutter(center: target.center, container: containerView) {
       return target.center
     }
     
     let targetRadius = max(target.frame.width, target.frame.height) / 2 + TARGET_PADDING
     let totalTextHeight = instructionView.frame.height
     
-    let onTop = getTargetPosition(target: targetView, container: containerView) == .below
+    let onTop = getTargetPosition(target: target, container: containerView) == .below
     
     let left = min(instructionView.frame.minX, target.frame.minX - targetRadius)
     let right = max(instructionView.frame.maxX, target.frame.maxX + targetRadius)

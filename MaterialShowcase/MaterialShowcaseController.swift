@@ -16,7 +16,10 @@ public protocol MaterialShowcaseControllerDelegate: class {
   func materialShowcaseController(_ materialShowcaseController: MaterialShowcaseController,
                                   materialShowcaseDidDisappear materialShowcase: MaterialShowcase,
                                   forIndex index: Int)
-  
+  func materialShowcaseController(_ materialShowcaseController: MaterialShowcaseController,
+                                  materialShowcaseDidSkip materialShowcase: MaterialShowcase?,
+                                  forIndex index: Int,
+                                  forError error: Error?)
 }
 
 public extension MaterialShowcaseControllerDelegate {
@@ -71,15 +74,32 @@ open class MaterialShowcaseController {
     }
     let numberOfShowcases = dataSource?.numberOfShowcases(for: self) ?? 0
     currentIndex += 1
-    let showcase = dataSource?.materialShowcaseController(self, showcaseAt: currentIndex)
-    showcase?.delegate = self
+    guard let showcase = dataSource?.materialShowcaseController(self, showcaseAt: currentIndex) else {
+      delegate?.materialShowcaseController(self,
+                                           materialShowcaseDidSkip: nil,
+                                           forIndex: currentIndex,
+                                           forError: MaterialShowcaseError.dataSourceShowcaseIsNil)
+      return
+    }
+    
+    showcase.delegate = self
     guard currentIndex < numberOfShowcases else {
       started = false
       currentIndex = -1
       return
     }
     currentShowcase = showcase
-    showcase?.show(completion: nil)
+    showcase.show { (error) in
+      if let error = error {
+        self.delegate?.materialShowcaseController(
+          self,
+          materialShowcaseDidSkip: showcase,
+          forIndex: self.currentIndex,
+          forError: error
+        )
+        self.nextShowcase()
+      }
+    }
   }
 }
 

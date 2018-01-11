@@ -38,13 +38,13 @@ public class MaterialShowcase: UIView {
   var offsetThreshold: CGFloat = 88
   
   // MARK: Private view properties
-  var containerView: UIView!
-  var targetView: UIView!
+  var containerView: UIView?
+  var targetView: UIView?
   var backgroundView: UIView!
   var targetHolderView: UIView!
   var hiddenTargetHolderView: UIView!
   var targetRippleView: UIView!
-  var targetCopyView: UIView!
+  var targetCopyView: UIView?
   var instructionView: MaterialShowcaseInstructionView!
   
   // MARK: Public Properties
@@ -103,8 +103,8 @@ extension MaterialShowcase {
       targetTintColor = tintColor
       backgroundPromptColor = tintColor
     } else {
-      targetTintColor = targetView.tintColor
-      backgroundPromptColor = targetView.tintColor
+      targetTintColor = targetView?.tintColor
+      backgroundPromptColor = targetView?.tintColor
     }
   }
   
@@ -137,10 +137,15 @@ extension MaterialShowcase {
   }
   
   /// Shows it over current screen after completing setup process
-  public func show(animated: Bool = true, completion handler: (()-> Void)?) {
-    initViews()
+  public func show(animated: Bool = true, completion handler: ((Error?)-> Void)? = nil) {
+    do {
+      try initViews()
+    } catch {
+      handler?(error)
+      return
+    }
     alpha = 0.0
-    containerView.addSubview(self)
+    containerView?.addSubview(self)
     self.layoutIfNeeded()
     
     let scale = TARGET_HOLDER_RADIUS / (backgroundView.frame.width / 2)
@@ -161,9 +166,7 @@ extension MaterialShowcase {
       self.alpha = 1.0
     }
     // Handler user's action after showing.
-    if let handler = handler {
-      handler()
-    }
+    handler?(nil)
   }
 }
 
@@ -235,7 +238,13 @@ extension MaterialShowcase {
     }, completion: nil)
   }
   
-  func initViews() {
+  func initViews() throws {
+    guard let targetView = targetView else {
+        throw MaterialShowcaseError.missingTarget
+    }
+    guard let containerView = containerView else {
+      throw MaterialShowcaseError.missingContainer
+    }
     let center = calculateCenter(at: targetView, to: containerView)
     
     addTargetRipple(at: center)
@@ -255,9 +264,16 @@ extension MaterialShowcase {
   
   /// Add background which is a big circle
   private func addBackground() {
+    guard let targetCopyView = targetCopyView else {
+      return
+    }
+    guard let containerView = containerView else {
+      return
+    }
+    
     let radius: CGFloat!
     
-    let center = getOuterCircleCenterPoint(for: targetCopyView)
+    let center = getOuterCircleCenterPoint(for: targetCopyView, inContainer: containerView)
     
     if UIDevice.current.userInterfaceIdiom == .pad {
       radius = 300.0
@@ -300,7 +316,11 @@ extension MaterialShowcase {
   /// Create a copy view of target view
   /// It helps us not to affect the original target view
   private func addTarget(at center: CGPoint) {
-    targetCopyView = targetView.copyView()
+    targetCopyView = targetView?.copyView()
+    
+    guard let targetCopyView = targetCopyView, let targetView = targetView else {
+        return
+    }
     
     if shouldSetTintColor {
       targetCopyView.setTintColor(targetTintColor, recursive: true)
@@ -336,6 +356,13 @@ extension MaterialShowcase {
   
   /// Configures and adds primary label view
   private func addInstructionView(at center: CGPoint) {
+    guard let targetView = targetView else {
+      return
+    }
+    guard let containerView = containerView else {
+      return
+    }
+    
     instructionView = MaterialShowcaseInstructionView()
     
     instructionView.primaryTextFont = primaryTextFont
@@ -432,7 +459,7 @@ extension MaterialShowcase {
   
   /// Detects the position of target view relative to its container
   func getTargetPosition(target: UIView, container: UIView) -> TargetPosition {
-    let center = calculateCenter(at: targetView, to: container)
+    let center = calculateCenter(at: target, to: container)
     if center.y < container.frame.height / 2{
       return .above
     } else {

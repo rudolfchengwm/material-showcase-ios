@@ -73,8 +73,8 @@ extension UILabel {
 
 extension UIView
 {
-  func copyView<T: UIView>() -> T {
-    return NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: self)) as! T
+  func copyView<T: UIView>() -> T? {
+    return NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: self)) as? T
   }
   func addHeight(_ height: CGFloat) {
     self.frame = CGRect(origin: self.frame.origin, size: CGSize(width: self.frame.width, height: self.frame.height + height))
@@ -119,4 +119,10 @@ extension CGRect {
       return CGPoint(x: midX, y: midY)
     }
   }
+}
+
+enum MaterialShowcaseError: Error {
+  case missingTarget
+  case missingContainer
+  case dataSourceShowcaseIsNil
 }
