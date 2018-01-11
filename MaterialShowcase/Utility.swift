@@ -121,7 +121,7 @@ extension CGRect {
   }
 }
 
-enum MaterialShowcaseError: Error {
+public enum MaterialShowcaseError: Error {
   case missingTarget
   case missingContainer
   case dataSourceShowcaseIsNil
