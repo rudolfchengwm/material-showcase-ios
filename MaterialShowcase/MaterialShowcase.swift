@@ -322,6 +322,10 @@ extension MaterialShowcase {
         return
     }
     
+    targetCopyView.layer.cornerRadius = targetView.layer.cornerRadius
+    targetCopyView.layer.borderColor = targetView.layer.borderColor
+    targetCopyView.layer.borderWidth = targetView.layer.borderWidth
+    
     if shouldSetTintColor {
       targetCopyView.setTintColor(targetTintColor, recursive: true)
       
