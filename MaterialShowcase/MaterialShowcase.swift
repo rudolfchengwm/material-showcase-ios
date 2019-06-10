@@ -316,7 +316,7 @@ extension MaterialShowcase {
   /// Create a copy view of target view
   /// It helps us not to affect the original target view
   private func addTarget(at center: CGPoint) {
-    targetCopyView = targetView?.copyView()
+    targetCopyView = targetView?.snapshotView(afterScreenUpdates: true)
     
     guard let targetCopyView = targetCopyView, let targetView = targetView else {
         return
