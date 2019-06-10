@@ -82,36 +82,36 @@ extension UIView
   }
 }
 
-extension UIViewKeyframeAnimationOptions {
-  
-  static var curveEaseIn: UIViewKeyframeAnimationOptions {
-    get {
-      return UIViewKeyframeAnimationOptions(animationOptions: .curveEaseIn)
+extension UIView.KeyframeAnimationOptions {
+    
+    static var curveEaseIn: UIView.KeyframeAnimationOptions {
+        get {
+            return UIView.KeyframeAnimationOptions(animationOptions: .curveEaseIn)
+        }
     }
-  }
-  
-  static var curveEaseOut: UIViewKeyframeAnimationOptions {
-    get {
-      return UIViewKeyframeAnimationOptions(animationOptions: .curveEaseOut)
+    
+    static var curveEaseOut: UIView.KeyframeAnimationOptions {
+        get {
+            return UIView.KeyframeAnimationOptions(animationOptions: .curveEaseOut)
+        }
     }
-  }
-  
-  static var curveEaseInOut: UIViewKeyframeAnimationOptions {
-    get {
-      return UIViewKeyframeAnimationOptions(animationOptions: .curveEaseInOut)
+    
+    static var curveEaseInOut: UIView.KeyframeAnimationOptions {
+        get {
+            return UIView.KeyframeAnimationOptions(animationOptions: .curveEaseInOut)
+        }
     }
-  }
-  
-  static var curveLinear: UIViewKeyframeAnimationOptions {
-    get {
-      return UIViewKeyframeAnimationOptions(animationOptions: .curveLinear)
+    
+    static var curveLinear: UIView.KeyframeAnimationOptions {
+        get {
+            return UIView.KeyframeAnimationOptions(animationOptions: .curveLinear)
+        }
     }
-  }
-  
-  init(animationOptions: UIViewAnimationOptions) {
-    rawValue = animationOptions.rawValue
-  }
-  
+    
+    init(animationOptions: UIView.AnimationOptions) {
+        self.init(rawValue: animationOptions.rawValue)
+    }
+    
 }
 
 extension CGRect {
